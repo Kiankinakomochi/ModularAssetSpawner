@@ -1,8 +1,8 @@
-# Modular Asset Spawner Readme
+# Modular Asset Spawner 
 
 ## Overview
 
-This readme provides detailed information on the `ModularAssetSpawner` and `ModularAssetSpawnerEditor` scripts for Unity. These scripts facilitate the spawning and management of modular assets in a Unity scene, offering customization options for spawn direction, offsets, and pivot points.
+The ModularAssetSpawner script is a Unity component designed to spawn multiple instances of a modular asset prefab in various configurations and directions. It supports spawning in single or multiple dimensions and allows for custom offsets and pivot points for the spawned instances.
 
 ## Scripts
 
@@ -59,4 +59,4 @@ The `ModularAssetSpawnerEditor` script provides a custom inspector for the `Modu
 - The `Middle` pivot point is not supported for `XY` and `XZ` directions.
 - The custom editor automatically handles undo operations, allowing you to revert changes if needed.
 
-By following the instructions and utilizing the provided parameters and methods, you can effectively manage the spawning of modular assets in your Unity projects.
+For any issues or questions, please refer to the Unity documentation or contact the script author.
