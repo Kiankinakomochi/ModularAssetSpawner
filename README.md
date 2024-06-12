@@ -1,119 +1,62 @@
-# ModularAssetSpawner README
+# Modular Asset Spawner Readme
 
 ## Overview
 
-The ModularAssetSpawner script is a Unity component designed to spawn multiple instances of a modular asset prefab in various configurations and directions. It supports spawning in single or multiple dimensions and allows for custom offsets and pivot points for the spawned instances.
+This readme provides detailed information on the `ModularAssetSpawner` and `ModularAssetSpawnerEditor` scripts for Unity. These scripts facilitate the spawning and management of modular assets in a Unity scene, offering customization options for spawn direction, offsets, and pivot points.
 
-## Features
+## Scripts
 
-- Spawn instances in different directions (X, Y, Z, XY, XZ).
+### ModularAssetSpawner
 
-- Configure the number of instances to spawn.
+The `ModularAssetSpawner` script is attached to a GameObject in your scene and handles the spawning of modular assets based on specified parameters.
 
-- Customize the offset between each instance.
+#### Parameters
 
-- Choose the pivot point for spawning (First, Middle, End).
+- **assetPrefab** (`GameObject`): The modular asset prefab to spawn.
+- **numberOfInstances** (`int`): The number of instances to spawn.
+- **direction** (`SpawnDirection`): The direction in which to spawn the assets. Options include X, Y, Z, XY, XZ.
+- **offset** (`Vector3`): The offset for each spawned instance.
+- **pivot** (`PivotPoint`): The pivot point of the asset. Options include First, Middle, End. Note that Middle is not supported for XY and XZ directions.
+- **dimensions** (`Vector2Int`): Number of instances in the X and Y directions, only used for XY and XZ directions.
+- **spawnedObjects** (`List<GameObject>`): A list to keep track of spawned objects.
 
-- Visualize the spawn positions using gizmos in the Unity Editor.
+#### Methods
 
-## Installation
+- **Start()**: Called when the script instance is being loaded. Initializes the size variables based on the asset prefab's BoxCollider.
+- **InitializeSizes()**: Initializes the size variables based on the asset prefab's BoxCollider.
+- **SpawnAssets()**: Spawns the modular assets based on the specified parameters. Ensures sizes are initialized before spawning and handles the clearing of previously spawned objects.
+- **OnValidate()**: Called when the script is loaded or a value is changed in the inspector. Removes null objects from the list and updates offsets if changed.
+- **CalculatePivotOffset(Vector3 directionVector)**: Calculates the pivot offset based on the spawn direction and pivot point.
+- **GetDirectionVector()**: Returns the direction vector based on the spawn direction.
+- **GetSecondaryDirectionVector()**: Returns the secondary direction vector for XY and XZ directions.
+- **UpdateOffsets()**: Updates the offsets of the spawned objects.
+- **OnDrawGizmos()**: Draws gizmos in the editor to visualize the spawn positions.
 
-1. Attach the ModularAssetSpawner script to a GameObject in your Unity scene.
+#### Usage
 
-2. Assign the modular asset prefab to the assetPrefab field in the Inspector.
+1. Attach the `ModularAssetSpawner` script to a GameObject in your scene.
+2. Assign a prefab to the `assetPrefab` field.
+3. Configure the spawn parameters as needed.
+4. Click the "Spawn Assets" button in the custom editor (see below).
 
-## Fields and Properties
+### ModularAssetSpawnerEditor
 
-- assetPrefab: The modular asset prefab to spawn.
+The `ModularAssetSpawnerEditor` script provides a custom inspector for the `ModularAssetSpawner` script. This custom inspector adds a button to the Unity Editor for spawning assets directly from the inspector.
 
-- numberOfInstances: The number of instances to spawn (used for X, Y, Z directions).
+#### Methods
 
-- direction: The direction in which to spawn the instances (`X`, Y, Z, XY, XZ).
+- **OnInspectorGUI()**: Overrides the default inspector GUI to add a "Spawn Assets" button. When clicked, this button calls the `SpawnAssets` method on the target `ModularAssetSpawner` and registers the undo operation.
 
-- offset: The offset for each spawned instance.
+#### Usage
 
-- pivot: The pivot point of the asset (`First`, Middle, End).
-
-- dimensions: The number of instances in the X and Y directions (used for XY and XZ directions).
-
-- spawnedObjects: A list to keep track of spawned objects.
-
-## Usage
-
-### Initialization
-
-The script automatically initializes the size variables based on the BoxCollider attached to the assetPrefab. Ensure the prefab has a BoxCollider component.
-
-### Spawning Assets
-
-To spawn assets, call the SpawnAssets() method. This method clears any previously spawned objects and spawns new instances based on the specified parameters.
-
-```csharp
-
-ModularAssetSpawner spawner = GetComponent<ModularAssetSpawner>();
-
-spawner.SpawnAssets();
-
-```
-
-### Updating Offsets
-
-To update the offsets of the spawned objects, call the UpdateOffsets() method. This method repositions the spawned instances based on the new offset values.
-
-```csharp
-
-spawner.UpdateOffsets();
-
-```
-
-## Editor Integration
-
-### OnValidate
-
-The OnValidate() method ensures that changes made in the Inspector are immediately reflected in the scene. It removes null objects from the spawnedObjects list and updates offsets if the offset values have changed.
-
-### Gizmos
-
-The script uses Gizmos to visualize the spawn positions in the Unity Editor. This helps in understanding how the instances will be positioned based on the specified parameters.
-
-## Example
-
-To use the ModularAssetSpawner script, follow these steps:
-
-1. Attach the script to a GameObject.
-
-2. Assign the assetPrefab in the Inspector.
-
-3. Set the desired number of instances, direction, offset, and pivot point.
-
-4. Call the SpawnAssets() method to spawn the instances.
-
-```csharp
-
-public class ExampleUsage : MonoBehaviour
-
-{
-
-    private void Start()
-
-    {
-
-        ModularAssetSpawner spawner = GetComponent<ModularAssetSpawner>();
-
-        spawner.SpawnAssets();
-
-    }
-
-}
-
-```
+1. Place the `ModularAssetSpawnerEditor` script in an `Editor` folder in your project.
+2. Select a GameObject with the `ModularAssetSpawner` component in the Unity Editor.
+3. Use the custom inspector to adjust parameters and click the "Spawn Assets" button to spawn assets.
 
 ## Notes
 
-- Ensure the assetPrefab has a BoxCollider component to accurately calculate its dimensions.
+- Ensure that the `assetPrefab` has a `BoxCollider` component to correctly initialize the size variables.
+- The `Middle` pivot point is not supported for `XY` and `XZ` directions.
+- The custom editor automatically handles undo operations, allowing you to revert changes if needed.
 
-- The Middle pivot point is not supported for XY and XZ directions.
-
-- Use the Gizmos visualization to fine-tune the spawning configuration in the Unity Editor.
-
-For any issues or questions, please refer to the Unity documentation or contact the script author.
+By following the instructions and utilizing the provided parameters and methods, you can effectively manage the spawning of modular assets in your Unity projects.
